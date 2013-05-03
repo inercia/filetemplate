@@ -11,7 +11,7 @@ build: bin/buildout
 
 
 clean:
-	rm -rf bin build parts temp somefile
+	rm -rf bin build parts temp somefile anotherfile
 	rm -rf *.tar.gz *.rpm *.egg-info
 
 distclean: clean

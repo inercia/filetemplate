@@ -205,6 +205,15 @@ class FileTemplate(object):
         o = self.options.get('overwrite', 'false').strip()
         self.overwrite = True if o.lower() in ['true', 'yes', '1'] else False
 
+        ## calculate the output files
+        dest_paths = []
+        for rel_path, last_mod, st_mode in self.actions:
+            dest = os.path.join(self.destination_dir, rel_path[:-3])
+            dest_paths.append(dest)
+        # save the full paths to the saved files
+        output = '\n'.join(dest_paths)
+        self.options['output'] = output
+
     def _user_error(self, msg, *args):
         msg = msg % args
         self.logger.error(msg)
@@ -242,6 +251,7 @@ class FileTemplate(object):
             result.close()
             os.chmod(dest, mode)
             self.options.created(rel_path[:-3])
+
         return self.options.created()
 
     def _create_paths(self, path):
