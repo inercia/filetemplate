@@ -15,46 +15,48 @@
 import os
 from setuptools import setup, find_packages
 
+
 def read(*rnames):
     return open(os.path.join(os.path.dirname(__file__), *rnames)).read()
 
-setup(name='z3c.recipe.filetemplate',
-      version = '2.2.0',
+
+setup(name='as.recipe.filetemplate',
+      version='2.2.0',
       license='ZPL 2.1',
-      url='http://pypi.python.org/pypi/z3c.recipe.filetemplate',
+      url='http://pypi.python.org/pypi/as.recipe.filetemplate',
       description="zc.buildout recipe for creating files from file templates",
       author='Philipp von Weitershausen',
       author_email='philipp@weitershausen.de',
       maintainer='Gary Poster',
       maintainer_email='gary.poster@canonical.com',
-      long_description=(read('z3c', 'recipe', 'filetemplate', 'README.txt')
+      long_description=(read('as', 'recipe', 'filetemplate', 'README.txt')
                         + '\n\n' +
                         read('CHANGES.txt')),
-      classifiers = ['Development Status :: 5 - Production/Stable',
-                     'Intended Audience :: Developers',
-                     'License :: OSI Approved :: Zope Public License',
-                     'Programming Language :: Python',
-                     'Operating System :: OS Independent',
-                     'Topic :: Software Development :: Build Tools',
-                     'Framework :: Buildout',
-                     ],
+      classifiers=['Development Status :: 5 - Production/Stable',
+                   'Intended Audience :: Developers',
+                   'License :: OSI Approved :: Zope Public License',
+                   'Programming Language :: Python',
+                   'Operating System :: OS Independent',
+                   'Topic :: Software Development :: Build Tools',
+                   'Framework :: Buildout',
+      ],
 
       packages=find_packages(),
-      namespace_packages=['z3c', 'z3c.recipe'],
+      namespace_packages=['as', 'as.recipe'],
       install_requires=['setuptools',
                         'zc.buildout',
                         'zc.recipe.egg',
-                        ],
-      extras_require = dict(
-          test = [
+      ],
+      extras_require=dict(
+          test=[
               'zope.testing',
               'z3c.recipe.scripts',
-              ]
-          ),
+          ]
+      ),
       zip_safe=True,
       entry_points="""
       [zc.buildout]
-      default = z3c.recipe.filetemplate:FileTemplate
+      default = as.recipe.filetemplate:FileTemplate
       """,
       include_package_data=True,
-      )
+)
