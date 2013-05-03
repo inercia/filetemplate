@@ -38,7 +38,7 @@ def update_file(dir, *args):
 def setUp(test):
     zc.buildout.tests.easy_install_SetUp(test)
     test.globs['update_file'] = update_file
-    zc.buildout.testing.install_develop('z3c.recipe.filetemplate', test)
+    zc.buildout.testing.install_develop('as.recipe.filetemplate', test)
 
 def test_suite():
     return doctest.DocFileSuite(

@@ -1,11 +1,11 @@
-``z3c.recipe.filetemplate``
+``as.recipe.filetemplate``
 ***************************
 
 ===========
 Basic Usage
 ===========
 
-With the ``z3c.recipe.filetemplate`` buildout recipe you can automate
+With the ``as.recipe.filetemplate`` buildout recipe you can automate
 the generation of text files from templates.  Upon execution, the
 recipe will read a number of template files, perform variable
 substitution and write the result to the corresponding output files.
@@ -24,7 +24,7 @@ For example, consider this simple template for a text file:
 
 Now let's create a buildout configuration so that we can substitute
 the values in this file.  All we have to do is define a part that uses
-the ``z3c.recipe.filetemplate`` recipe.  With the ``files`` parameter
+the ``as.recipe.filetemplate`` recipe.  With the ``files`` parameter
 we specify one or more files that need substitution (separated by
 whitespace).  Then we can add arbitrary parameters to the section.
 Those will be used to fill the variables in the template:
@@ -35,7 +35,7 @@ Those will be used to fill the variables in the template:
     ... parts = message
     ...
     ... [message]
-    ... recipe = z3c.recipe.filetemplate
+    ... recipe = as.recipe.filetemplate
     ... files = helloworld.txt
     ... world = Philipp
     ... """)
@@ -115,7 +115,7 @@ to exclude some paths from the ``source-directory`` search path.
     ... parts = message
     ...
     ... [message]
-    ... recipe = z3c.recipe.filetemplate
+    ... recipe = as.recipe.filetemplate
     ... source-directory = template
     ... world = Philipp
     ... """)
@@ -199,7 +199,7 @@ Therefore, if we only build .sh files, the etc directory will disappear.
     ... parts = message
     ...
     ... [message]
-    ... recipe = z3c.recipe.filetemplate
+    ... recipe = as.recipe.filetemplate
     ... source-directory = template
     ... files = *.sh
     ... world = Philipp
@@ -238,7 +238,7 @@ Therefore, if we set ``exclude-directories`` to ``bin``, the
     ... parts = message
     ...
     ... [message]
-    ... recipe = z3c.recipe.filetemplate
+    ... recipe = as.recipe.filetemplate
     ... source-directory = template
     ... exclude-directories = bin
     ... world = Philipp
@@ -291,7 +291,7 @@ standard buildout syntax, but used in the template.  Notice
     ... parts = message
     ...
     ... [message]
-    ... recipe = z3c.recipe.filetemplate
+    ... recipe = as.recipe.filetemplate
     ... files = helloworld.txt
     ... world = Philipp
     ... """)
@@ -382,7 +382,7 @@ examples of the path filters in the `Working with Paths`_ section.
     ... parts = message
     ...
     ... [message]
-    ... recipe = z3c.recipe.filetemplate
+    ... recipe = as.recipe.filetemplate
     ... files = helloworld.txt
     ... world = Philipp
     ... name = willy wonka
@@ -416,7 +416,7 @@ following buildout.
     ... myaudience = World
     ...
     ... [message]
-    ... recipe = z3c.recipe.filetemplate
+    ... recipe = as.recipe.filetemplate
     ... files = helloworld.txt
     ... extends = template_defaults
     ...
@@ -457,7 +457,7 @@ be useful if you want to define a multi-line expression (see
     ... parts = message
     ...
     ... [message]
-    ... recipe = z3c.recipe.filetemplate
+    ... recipe = as.recipe.filetemplate
     ... files = helloworld.txt
     ... interpreted-options = silly-range = repr(range(5))
     ...                       first-interpreted-option
@@ -527,7 +527,7 @@ shouldn't be too surprising.
     ... parts = message
     ...
     ... [message]
-    ... recipe = z3c.recipe.filetemplate
+    ... recipe = as.recipe.filetemplate
     ... source-directory = template
     ... """)
 
@@ -554,7 +554,7 @@ bigger.
     ... relative-paths = true
     ...
     ... [message]
-    ... recipe = z3c.recipe.filetemplate
+    ... recipe = as.recipe.filetemplate
     ... source-directory = template
     ... """)
 
@@ -631,7 +631,7 @@ If relative-paths is set to false (the default), the results are simple.
     ... parts = message
     ...
     ... [message]
-    ... recipe = z3c.recipe.filetemplate
+    ... recipe = as.recipe.filetemplate
     ... source-directory = template
     ... """)
 
@@ -656,7 +656,7 @@ Now let's look at the larger code when relative-paths is set to true.
     ... relative-paths = true
     ...
     ... [message]
-    ... recipe = z3c.recipe.filetemplate
+    ... recipe = as.recipe.filetemplate
     ... source-directory = template
     ... """)
 
@@ -721,7 +721,7 @@ Let's consider a simple example.
     ... parts = message
     ...
     ... [message]
-    ... recipe = z3c.recipe.filetemplate
+    ... recipe = as.recipe.filetemplate
     ... files = helloworld.txt
     ... eggs = demo<0.3
     ...
@@ -773,7 +773,7 @@ paths.
     ... parts = message
     ...
     ... [message]
-    ... recipe = z3c.recipe.filetemplate
+    ... recipe = as.recipe.filetemplate
     ... files = helloworld.txt
     ... eggs = demo<0.3
     ... extra-paths = ${buildout:directory}/foo
@@ -809,7 +809,7 @@ like when we set relative-paths to True.
     ... relative-paths = true
     ...
     ... [message]
-    ... recipe = z3c.recipe.filetemplate
+    ... recipe = as.recipe.filetemplate
     ... files = helloworld.txt
     ... eggs = demo<0.3
     ... extra-paths = ${buildout:directory}/foo
@@ -869,7 +869,7 @@ buildout directories.  Here is an example buildout.cfg.
     eggs = demo<0.3
 
     [message]
-    recipe = z3c.recipe.filetemplate
+    recipe = as.recipe.filetemplate
     files = helloworld.py
 
 Then the template to use this would want to simply put

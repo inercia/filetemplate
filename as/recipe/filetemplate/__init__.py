@@ -27,8 +27,8 @@ import zc.buildout.easy_install
 ABS_PATH_ERROR = ('%s is an absolute path. Paths must be '
                   'relative to the buildout directory.')
 
-class FileTemplate(object):
 
+class FileTemplate(object):
     filters = {}
     dynamic_options = {}
 
@@ -38,7 +38,7 @@ class FileTemplate(object):
         self.options = options
         self.buildout_root = zc.buildout.easy_install.realpath(
             buildout['buildout']['directory'])
-        self.logger=logging.getLogger(self.name)
+        self.logger = logging.getLogger(self.name)
         # get defaults from extended sections
         defaults = {}
         extends = self.options.get('extends', '').split()
@@ -50,7 +50,7 @@ class FileTemplate(object):
         relative_paths = self.options.setdefault(
             'relative-paths',
             buildout['buildout'].get('relative-paths', 'false')
-            )
+        )
         if relative_paths not in ('true', 'false'):
             self._user_error(
                 'The relative-paths option must have the value of '
@@ -72,7 +72,7 @@ class FileTemplate(object):
                 os.path.join(buildout.options['directory'], p.strip())
                 for p in options.get('extra-paths', '').split('\n')
                 if p.strip()
-                )
+            )
         options['_paths'] = '\n'.join(paths)
         # get and check the files to be created
         self.filenames = self.options.get('files', '*').split()
@@ -99,8 +99,8 @@ class FileTemplate(object):
             if os.path.isabs(filename):
                 self._user_error(ABS_PATH_ERROR, filename)
             if not zc.buildout.easy_install.realpath(
-                os.path.normpath(os.path.join(self.source_dir, filename))
-                ).startswith(self.source_dir):
+                    os.path.normpath(os.path.join(self.source_dir, filename))
+            ).startswith(self.source_dir):
                 # path used ../ to get out of buildout dir
                 self._user_error(
                     'source files must be within the buildout directory')
@@ -108,10 +108,10 @@ class FileTemplate(object):
         unmatched = set(source_patterns)
         unexpected_dirs = []
         self.actions = [] # each entry is tuple of
-                          # (relative path, source last-modified-time, mode)
+        # (relative path, source last-modified-time, mode)
         if self.recursive:
             def visit(ignored, dirname, names):
-                relative_prefix = dirname[len(self.source_dir)+1:]
+                relative_prefix = dirname[len(self.source_dir) + 1:]
                 if relative_prefix in self.exclude_dirs:
                     # exclude current directory and its subdirectories
                     del names[:]
@@ -131,8 +131,8 @@ class FileTemplate(object):
                     dir = os.path.sep.join(parts[:-1])
                     pattern = parts[-1]
                     if (dir and
-                        relative_prefix != dir and
-                        (dir != '.' or relative_prefix != '')):
+                                relative_prefix != dir and
+                            (dir != '.' or relative_prefix != '')):
                         # if a directory is specified, it must match
                         # precisely.  We also support the '.' directory.
                         continue
@@ -142,6 +142,7 @@ class FileTemplate(object):
                         found.update(matching)
                 for name in found:
                     self.actions.append(file_info[name])
+
             os.path.walk(
                 self.source_dir, visit, None)
         else:
@@ -157,7 +158,7 @@ class FileTemplate(object):
                     else:
                         self.actions.append(
                             (val, last_modified, statinfo.st_mode))
-        # This is supposed to be a flag so that when source files change, the
+            # This is supposed to be a flag so that when source files change, the
         # recipe knows to reinstall.
         self.options['_actions'] = repr(self.actions)
         if unexpected_dirs:
@@ -168,7 +169,7 @@ class FileTemplate(object):
             self._user_error(
                 'No template found for these file names: %s',
                 ', '.join(unmatched))
-        # parse interpreted options
+            # parse interpreted options
         interpreted = self.options.get('interpreted-options')
         if interpreted:
             globs = {'__builtins__': __builtins__, 'os': os, 'sys': sys}
@@ -200,6 +201,10 @@ class FileTemplate(object):
                             key, expression, evaluated, type(evaluated))
                     options[key] = evaluated
 
+        # should we overwrite files?
+        o = self.options.get('overwrite', 'false')
+        self.overwrite = True if o.lower in ['true', 'yes', '1'] else False
+
     def _user_error(self, msg, *args):
         msg = msg % args
         self.logger.error(msg)
@@ -207,16 +212,17 @@ class FileTemplate(object):
 
     def install(self):
         already_exists = [
-                rel_path[:-3] for rel_path, last_mod, st_mode in self.actions
+            rel_path[:-3] for rel_path, last_mod, st_mode in self.actions
             if os.path.exists(
-                os.path.join(self.destination_dir, rel_path[:-3]))
-            ]
-        if already_exists:
+                os.path.join(self.destination_dir, rel_path[:-3]))]
+
+        if already_exists and not self.overwrite:
             self._user_error(
                 'Destinations already exist: %s. Please make sure that '
                 'you really want to generate these automatically.  Then '
                 'move them away.', ', '.join(already_exists))
         self.seen = []
+
         # We throw ``seen`` away right now, but could move template
         # processing up to __init__ if valuable.  That would mean that
         # templates would be rewritten even if a value in another
@@ -226,12 +232,12 @@ class FileTemplate(object):
         for rel_path, last_mod, st_mode in self.actions:
             source = os.path.join(self.source_dir, rel_path)
             dest = os.path.join(self.destination_dir, rel_path[:-3])
-            mode=stat.S_IMODE(st_mode)
+            mode = stat.S_IMODE(st_mode)
             # we process the file first so that it won't be created if there
             # is a problem.
             processed = Template(source, dest, self).substitute()
             self._create_paths(os.path.dirname(dest))
-            result=open(dest, "wt")
+            result = open(dest, "wt")
             result.write(processed)
             result.close()
             os.chmod(dest, mode)
@@ -301,10 +307,9 @@ class Template:
             if factory is not None:
                 return self.recipe._call_and_log(
                     factory, (self, start, option),
-                    lambda lineno, colno: (
-                        'Dynamic option %r in line %d, col %d of %s '
-                        'crashed.') % (option, lineno, colno, self.source))
-            # else...
+                    lambda lineno, colno: ('Dynamic option %r in line %d, col %d of %s '
+                                           'crashed.') % (option, lineno, colno, self.source))
+                # else...
             options = self.recipe.options
         elif section in self.recipe.buildout:
             options = self.recipe.buildout[section]
@@ -345,10 +350,10 @@ class Template:
                         val = self.recipe._call_and_log(
                             filter, (val, self, start, filter_name),
                             lambda lineno, colno: (
-                                'Filter %r in line %d, col %d of %s '
-                                'crashed processing value %r') % (
-                                filter_name, lineno, colno, self.source, val))
-                # We use this idiom instead of str() because the latter will
+                                                      'Filter %r in line %d, col %d of %s '
+                                                      'crashed processing value %r') % (
+                                                      filter_name, lineno, colno, self.source, val))
+                    # We use this idiom instead of str() because the latter will
                 # fail if val is a Unicode containing non-ASCII characters.
                 return '%s' % (val,)
             escaped = mo.group('escaped')
@@ -362,6 +367,7 @@ class Template:
                     (mo.group('invalid'), lineno, colno, self.source))
             raise ValueError('Unrecognized named group in pattern',
                              self.pattern) # programmer error, AFAICT
+
         return self.pattern.sub(convert, self.template)
 
 
@@ -372,36 +378,42 @@ def filter(func):
     FileTemplate.filters[func.__name__.replace('_', '-')] = func
     return func
 
+
 @filter
 def capitalize(val, template, start, filter):
     return val.capitalize()
+
 
 @filter
 def title(val, template, start, filter):
     return val.title()
 
+
 @filter
 def upper(val, template, start, filter):
     return val.upper()
 
+
 @filter
 def lower(val, template, start, filter):
     return val.lower()
+
 
 @filter
 def path_repr(val, template, start, filter):
     # val is a path.
     return _maybe_relativize(
         val, template,
-        lambda p: "_z3c_recipe_filetemplate_path_repr(%r)" % (p,),
+        lambda p: "_as_recipe_filetemplate_path_repr(%r)" % (p,),
         repr)
+
 
 @filter
 def shell_path(val, template, start, filter):
     # val is a path.
     return _maybe_relativize(
         val, template,
-        lambda p: '"$Z3C_RECIPE_FILETEMPLATE_BASE"/%s' % (p,),
+        lambda p: '"$AS_RECIPE_FILETEMPLATE_BASE"/%s' % (p,),
         lambda p: p)
 
 # Helpers hacked from zc.buildout.easy_install.
@@ -414,10 +426,11 @@ def _maybe_relativize(path, template, relativize, absolutize):
         destination = template.destination
         common = os.path.dirname(os.path.commonprefix([path, destination]))
         if (common == buildout_root or
-            common.startswith(os.path.join(buildout_root, ''))
-            ):
+                common.startswith(os.path.join(buildout_root, ''))
+        ):
             return relativize(_relative_path(common, path))
     return absolutize(path)
+
 
 def _relative_path(common, path):
     """Return the relative path from ``common`` to ``path``.
@@ -444,11 +457,13 @@ def dynamic_option(func):
     FileTemplate.dynamic_options[func.__name__.replace('_', '-')] = func
     return func
 
+
 @dynamic_option
 def os_paths(template, start, name):
     return os.pathsep.join(
         shell_path(path, template, start, 'os-paths')
         for path in template.recipe.paths)
+
 
 @dynamic_option
 def string_paths(template, start, name):
@@ -458,11 +473,13 @@ def string_paths(template, start, name):
         path_repr(path, template, start, 'string-paths')
         for path in template.recipe.paths)
 
+
 @dynamic_option
 def space_paths(template, start, name):
     return ' '.join(
         shell_path(path, template, start, 'space-paths')
         for path in template.recipe.paths)
+
 
 @dynamic_option
 def shell_relative_path_setup(template, start, name):
@@ -480,19 +497,21 @@ def shell_relative_path_setup(template, start, name):
     else:
         return ''
 
+
 SHELL_RELATIVE_PATH_SETUP = '''\
 # Get full, non-symbolic-link path to this file.
-Z3C_RECIPE_FILETEMPLATE_FILENAME=`\\
+AS_RECIPE_FILETEMPLATE_FILENAME=`\\
     readlink -f "$0" 2>/dev/null || \\
     realpath "$0" 2>/dev/null || \\
     type -P "$0" 2>/dev/null`
 # Get directory of file.
-Z3C_RECIPE_FILETEMPLATE_BASE=`dirname ${Z3C_RECIPE_FILETEMPLATE_FILENAME}`
+AS_RECIPE_FILETEMPLATE_BASE=`dirname ${AS_RECIPE_FILETEMPLATE_FILENAME}`
 '''
 
 SHELL_DIRNAME = '''\
-Z3C_RECIPE_FILETEMPLATE_BASE=`dirname ${Z3C_RECIPE_FILETEMPLATE_BASE}`
+AS_RECIPE_FILETEMPLATE_BASE=`dirname ${AS_RECIPE_FILETEMPLATE_BASE}`
 '''
+
 
 @dynamic_option
 def python_relative_path_setup(template, start, name):
@@ -511,30 +530,32 @@ def python_relative_path_setup(template, start, name):
     else:
         return ''
 
+
 PYTHON_RELATIVE_PATH_SETUP_START = '''\
 import os, imp
 # Get path to this file.
 if __name__ == '__main__':
-    _z3c_recipe_filetemplate_filename = __file__
+    _as_recipe_filetemplate_filename = __file__
 else:
     # If this is an imported module, we want the location of the .py
     # file, not the .pyc, because the .py file may have been symlinked.
-    _z3c_recipe_filetemplate_filename = imp.find_module(__name__)[1]
+    _as_recipe_filetemplate_filename = imp.find_module(__name__)[1]
 # Get the full, non-symbolic-link directory for this file.
-_z3c_recipe_filetemplate_base = os.path.dirname(
-    os.path.abspath(os.path.realpath(_z3c_recipe_filetemplate_filename)))
+_as_recipe_filetemplate_base = os.path.dirname(
+    os.path.abspath(os.path.realpath(_as_recipe_filetemplate_filename)))
 '''
 
 PYTHON_DIRNAME = '''\
-_z3c_recipe_filetemplate_base = os.path.dirname(
-    _z3c_recipe_filetemplate_base)
+_as_recipe_filetemplate_base = os.path.dirname(
+    _as_recipe_filetemplate_base)
 '''
 
 PYTHON_RELATIVE_PATH_SETUP_END = '''\
-def _z3c_recipe_filetemplate_path_repr(path):
+def _as_recipe_filetemplate_path_repr(path):
     "Return absolute version of buildout-relative path."
-    return os.path.join(_z3c_recipe_filetemplate_base, path)
+    return os.path.join(_as_recipe_filetemplate_base, path)
 '''
+
 
 def _relative_depth(common, path):
     # Helper ripped from zc.buildout.easy_install.

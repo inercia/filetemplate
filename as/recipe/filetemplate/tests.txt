@@ -28,7 +28,7 @@ File names are separated by any kind of whitespace:
     ... parts = multiple
     ...
     ... [multiple]
-    ... recipe = z3c.recipe.filetemplate
+    ... recipe = as.recipe.filetemplate
     ... files = helloworld.txt
     ...         goodbyeworld.txt
     ... world = Philipp
@@ -52,7 +52,7 @@ this invalid buildout configuration:
     ... parts = evil
     ...
     ... [evil]
-    ... recipe = z3c.recipe.filetemplate
+    ... recipe = as.recipe.filetemplate
     ... files = /etc/passwd.in
     ... root = me
     ... """)
@@ -77,7 +77,7 @@ for which no template can be found:
     ... parts = notthere
     ...
     ... [notthere]
-    ... recipe = z3c.recipe.filetemplate
+    ... recipe = as.recipe.filetemplate
     ... files = doesntexist
     ... """)
 
@@ -111,7 +111,7 @@ replace a file that's already there:
     ... parts = alreadythere
     ...
     ... [alreadythere]
-    ... recipe = z3c.recipe.filetemplate
+    ... recipe = as.recipe.filetemplate
     ... files = alreadyhere.txt
     ... """)
 
@@ -144,7 +144,7 @@ that aren't defined in ``buildout.cfg``:
     ... parts = missing
     ...
     ... [missing]
-    ... recipe = z3c.recipe.filetemplate
+    ... recipe = as.recipe.filetemplate
     ... files = missing.txt
     ... """)
 
@@ -167,7 +167,7 @@ the recipe will update, which is a no-op.
     ... parts = message
     ...
     ... [message]
-    ... recipe = z3c.recipe.filetemplate
+    ... recipe = as.recipe.filetemplate
     ... files = helloworld.txt
     ... world = Philipp
     ... """)
@@ -189,7 +189,7 @@ files causes a reinstall with the expected behavior.
     ... parts = message
     ...
     ... [message]
-    ... recipe = z3c.recipe.filetemplate
+    ... recipe = as.recipe.filetemplate
     ... source-directory = template
     ... world = Philipp
     ... """)
@@ -246,7 +246,7 @@ one ``files`` filter.  Here's an example.
     ... parts = message
     ...
     ... [message]
-    ... recipe = z3c.recipe.filetemplate
+    ... recipe = as.recipe.filetemplate
     ... source-directory = template
     ... files = *.conf
     ...         helloworld.cfg
@@ -276,7 +276,7 @@ directory must match precisely.
     ... parts = message
     ...
     ... [message]
-    ... recipe = z3c.recipe.filetemplate
+    ... recipe = as.recipe.filetemplate
     ... source-directory = template
     ... files = *.sh
     ...         etc/helloworld.cfg
@@ -295,7 +295,7 @@ directory must match precisely.
     ... parts = message
     ...
     ... [message]
-    ... recipe = z3c.recipe.filetemplate
+    ... recipe = as.recipe.filetemplate
     ... source-directory = template
     ... files = *.sh
     ...         etc/in/helloworld.cfg
@@ -340,7 +340,7 @@ At the start, we have the ``etc`` directory but not ``helloworld.cfg``.
     ... parts = message
     ...
     ... [message]
-    ... recipe = z3c.recipe.filetemplate
+    ... recipe = as.recipe.filetemplate
     ... source-directory = template
     ... files = ./helloworld.cfg
     ... world = Philipp
@@ -393,7 +393,7 @@ paths so we explore those here.  We also evaluate paths at the directory root.
     ... relative-paths = true
     ...
     ... [message]
-    ... recipe = z3c.recipe.filetemplate
+    ... recipe = as.recipe.filetemplate
     ... source-directory = template
     ... """)
 
