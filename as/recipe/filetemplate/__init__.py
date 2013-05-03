@@ -202,8 +202,8 @@ class FileTemplate(object):
                     options[key] = evaluated
 
         # should we overwrite files?
-        o = self.options.get('overwrite', 'false')
-        self.overwrite = True if o.lower in ['true', 'yes', '1'] else False
+        o = self.options.get('overwrite', 'false').strip()
+        self.overwrite = True if o.lower() in ['true', 'yes', '1'] else False
 
     def _user_error(self, msg, *args):
         msg = msg % args
