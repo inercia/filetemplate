@@ -21,7 +21,7 @@ def read(*rnames):
 
 
 setup(name='as.recipe.filetemplate',
-      version='2.2.0',
+      version='2.2.1',
       license='ZPL 2.1',
       url='http://pypi.python.org/pypi/as.recipe.filetemplate',
       description="zc.buildout recipe for creating files from file templates",
