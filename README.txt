@@ -1,1 +1,1 @@
-Please refer to z3c/recipe/filetemplate/README.txt
+Please refer to as/recipe/filetemplate/README.txt
